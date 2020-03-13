@@ -47,30 +47,31 @@ function init(){
 function lightStars(e){
     var starNumber = e.target.alt;
     var stars = document.querySelectorAll("span#stars img");
-    /*steps 6c - 6e
-    for(var i = 0; i < stars; i++){
-        stars[i]
+    //steps 6c - 6e
+    for(var i = 0; i < starNumber; i++){
+        stars[i].src = "bw_star2.png";
     }
 
-    for(var i = 0; i < stars){
-        stars[i]
+    for(var i = starNumber; i < 5; i++){
+        stars[i].src = "bw_star.png";
     }
     
-   document.getElementById("rating") = starNumber stars; 
+    document.getElementById("rating").value = starNumber + " stars";    
 
-   */
-
-   e.target.addEventListener("mouseleave", turnOffStars);
-   //step 6g  e.target.addEventListener("mouseleave", function(){turnOffStars()});
+    e.target.addEventListener("mouseleave", turnOffStars);
+    e.target.addEventListener("click", function(){
+        e.target.removeEventListener("mouseleave", turnOffStars)}
+    );
 
 }
 
 function turnOffStars(){
     var stars = document.querySelectorAll("span#stars img");
     for(var i = 0; i < stars.length; i++){
-        // step 7b star[i] = 
-        document.getElementById("rating").innerHTML = "";
+        stars[i].src = "bw_star.png";
+        
     }
+    document.getElementById("rating").innerHTML = "";
 }
 
 function updateCount(){
