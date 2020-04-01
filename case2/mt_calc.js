@@ -54,7 +54,7 @@ function buttonClick(e){
         case "bksp":
             calcValue = eraseChar(calcValue).value;
         case "enter":
-            calcValue = 
+            calcValue = "=" + evalEq(calcValue, calcDecimal) + "/n";
     }
 }
 
