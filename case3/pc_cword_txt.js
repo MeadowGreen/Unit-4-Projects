@@ -7,8 +7,8 @@
 
    Crossword Puzzle Script
    
-   Author: 
-   Date:   
+   Author: Meadow Green
+   Date:   4-1-20
    
    Global Variables
    ================
