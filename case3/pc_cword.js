@@ -59,42 +59,101 @@ var typeDirection = "right";
 window.onload = init;
 
 function init() {
-    allLetters = document.querySelectorAll("table#crossword span");
-    currentLetter = allLetters[0]; 
-    var acrossID = currentLetter.dataset.clueA;
-    var downID = currentLetter.dataset.clueD;
-    acrossClue = document.getElementById(currentLetter.dataset.clueA);
-    downClue = document.getElementById(currentLetter.dataset.clueD);
+   allLetters = document.querySelectorAll("table#crossword span");
+   currentLetter = allLetters[0]; 
+   var acrossID = currentLetter.dataset.clueA;
+   var downID = currentLetter.dataset.clueD;
+   acrossClue = document.getElementById(currentLetter.dataset.clueA);
+   downClue = document.getElementById(currentLetter.dataset.clueD);
+
+   formatPuzzle(currentLetter);
+   for(var i = 0; i < allLetters.length; i++){
+      allLetters[i].style.cursor = "pointer";
+      allLetters[i].onmousedown = function(e){
+         formatPuzzle(e.target);
+      } 
+   }
+
+   allLetters.keydown = selectLetter;
+
+   var typeImage = document.getElementById("directionImg");
+   typeImage.style.cursor = "pointer";
+   typeImage.onmousedown = typeDirection;
 }
 
-function formatPuzzle(puzzleLetter){
-    currentLetter = puzzleLetter;
-    for(var i = 0; i < allLetters.length; i++){
-        allLetters[i].style.backgroundColor = "";
-    }
-    acrossClue.style.backgroundColor = "";
-    downClue.style.backgroundColor = "";
-    if(currentLetter.dataset.clueA != undefined){
-        acrossClue = document.getElementById(currentLetter.dataset.clueA);
-        acrossClue.style.color = "blue";
-        wordLetters = document.querySelectorAll(data-clue-A = clue);
-        wordLetters.style.backgroundColor = "rgb(255, 231, 255)";
-    }
-    if(currentLetter.dataset.clueD != undefined){
-        downClue = document.getElementById(currentLetter.dataset.clueD);
-        downClue.style.color = "blue";
-        wordLetters = document.querySelectorAll(data-clue-d = clue);
-        wordLetters.style.backgroundColor = "rgb(255, 231, 231)";
-    }
-    if(typeDirection === "right"){
-        currentLetter.style.backgroundColor = "rgb(191, 191, 255)";
-    }else{
-        currentLetter.style.backgroundColor = "rgb(255, 191, 191)";
-    }
+function formatPuzzle(puzzleLetter) {
+   currentLetter = puzzleLetter; 
+   for (var i = 0; i < allLetters.length; i++) {
+      allLetters[i].style.backgroundColor = "";
+   }
+   acrossClue.style.color = "";
+   downClue.style.color = "";
+   if (currentLetter.dataset.clueA !== undefined) {
+      acrossClue = document.getElementById(currentLetter.dataset.clueA);
+      acrossClue.style.color = "blue";
+      wordLetters = document.querySelectorAll("[data-clue-a = " + currentLetter.dataset.clueA + "]");
+      for (var i = 0; i < wordLetters.length; i++) {
+         wordLetters[i].style.backgroundColor = "rgb(231, 231, 255)";
+      }
+   }
+   if (currentLetter.dataset.clueD !== undefined) {
+      downClue = document.getElementById(currentLetter.dataset.clueD);
+      downClue.style.color = "red";
+      wordLetters = document.querySelectorAll("[data-clue-d = " + currentLetter.dataset.clueD + "]");
+      for (var i = 0; i < wordLetters.length; i++) {
+         wordLetters[i].style.backgroundColor = "rgb(255, 231, 231)";
+      }
+   }
+   if (typeDirection === "right") {
+      currentLetter.style.backgroundColor = "rgb(191, 191, 255)";
+   } else {
+      currentLetter.style.backgroundColor = "rgb(255, 191, 191)";
+   }
+
 }
 
 
-   
+function selectLetter(e){
+   var leftLetter = document.getElementById(currentLetter.dataset.left);
+   var upLetter = document.getElementById(currentLetter.dataset.up);
+   var rightLetter = document.getElementById(currentLetter.dataset.right);
+   var downLetter = document.getElementById(currentLetter.dataset.down);
+   var userKey = e.keyCode;
+   if(userKey === 37){
+      formatPuzzle(leftLetter);
+   }else if(userKey === 38){
+      formatPuzzle(upLetter);
+   }else if(userKey === 39 || userKey === 9){
+      formatPuzzle(rightLetter);
+   }else if(userKey === 40 || userKey === 13){
+      formatPuzzle(downLetter);
+   }else if(userKey === 8 || userKey === 46){
+      currentLetter.textContent = "";
+   }else if(userKey === 32){
+      switchTypeDirection();
+   }else if(userKey >= 65 && userKey <= 90 ){
+      currentLetter.textContent = getChar(userKey);
+      if(typeDirection === "right"){
+         formatPuzzle(rightLetter);
+      }else{
+         formatPuzzle(downLetter);
+      }
+   }
+   e.preventDefault();
+}
+
+function switchTypeDirection(){
+   var typeImage = document.getElementById("directionImg");
+   if(typeDirection === "right"){
+      typeDirection = "down";
+      typeImage.src = "pc_right.png";
+      currentLetter.style.backgroundColor = "rgb(255, 191, 191)";
+   }else{
+      typeDirection = "right";
+      typeImage.src = "pc_down.png";
+      currentLetter.style.backgroundColor = "rgb(191, 191, 255)";
+   }
+}
 
 
 
