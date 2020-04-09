@@ -67,6 +67,7 @@ function init() {
    downClue = document.getElementById(currentLetter.dataset.clueD);
 
    formatPuzzle(currentLetter);
+
    for(var i = 0; i < allLetters.length; i++){
       allLetters[i].style.cursor = "pointer";
       allLetters[i].onmousedown = function(e){
@@ -74,29 +75,28 @@ function init() {
       } 
    }
 
-   document.keydown = selectLetter;
+   document.onkeydown = selectLetter;
 
    var typeImage = document.getElementById("directionImg");
    typeImage.style.cursor = "pointer";
    typeImage.onclick = switchTypeDirection;
 
-   document.getElementById("showErrors").onclick = 
-      function(){
+   document.getElementById("showErrors").onclick = function(){
          for(var i = 0; i < allLetters.length; i++){
-            if(allLetters[i].textContent !== allLetters[i].dataset.letter.value){
+            if(allLetters[i].textContent !== allLetters[i].dataset.letter){
                allLetters[i].style.color = "red";
+               setTimeout(function() {
+                  for (var i = 0; i < allLetters.length; i++) {
+                     allLetters[i].style.color = "";
+                  }
+               }, 3000);
             }
-            setInterval(function(){
-               allLetters.style.color = "";
-            }
-            , 3000);
          }
-   }
-
-   document.getElementById("showSolution").onclick = 
-   function(){
+      }
+   
+   document.getElementById("showSolution").onclick = function(){
       for(var i = 0; i < allLetters.length; i++){
-         allLetters[i].textContent = allLetters[i].dataset.letter.value;
+         allLetters[i].textContent = allLetters[i].dataset.letter;
       }
    }
 }
@@ -106,8 +106,10 @@ function formatPuzzle(puzzleLetter) {
    for (var i = 0; i < allLetters.length; i++) {
       allLetters[i].style.backgroundColor = "";
    }
+
    acrossClue.style.color = "";
    downClue.style.color = "";
+
    if (currentLetter.dataset.clueA !== undefined) {
       acrossClue = document.getElementById(currentLetter.dataset.clueA);
       acrossClue.style.color = "blue";
